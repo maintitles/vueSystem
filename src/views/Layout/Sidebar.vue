@@ -1,6 +1,6 @@
 <template>
     <el-scrollbar class="el-scrollbar">
-        <el-menu class="el-menu-slide" :default-active="$router.currentRouter.path" router>
+        <el-menu class="el-menu-slide" :default-active="$router.currentRoute.path" router>
             <template 
                 v-for="item in getRoutes" 
                 v-if="item.hidden && item.children && item.children.length>0"
