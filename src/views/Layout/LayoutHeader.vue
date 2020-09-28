@@ -8,12 +8,12 @@
                 </div>
             </el-col>
             <el-col :xs="14" :sm="12" :md="10" :lg="8" :xl="6">
-                <el-dropdown class="system-user">
+                <el-dropdown class="system-user" @command="userCommand">
                     <span class="userinfo-inner">
                         <img :src="require('@/assets/' + getUser.key + '.jpg')" alt/>
                         {{getUser.username}}
                     </span>
-                    <el-dropdown-menu>
+                    <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item command="usercenter">个人中心</el-dropdown-item>
                         <el-dropdown-item divided command="logout">注销登录</el-dropdown-item>
                     </el-dropdown-menu>
@@ -27,12 +27,18 @@
     import { Component , Vue} from "vue-property-decorator";
     import { State , Getter , Mutation , Action } from "vuex-class"
     @Component({
-        components:{
-
-        }
+        components:{}
     })
     export default class LayoutHeader extends Vue {
         @Getter("user") getUser: any;
+        userCommand(command:String):void {
+            if(command == "logout"){
+                localStorage.removeItem("tsToken");
+                this.$router.replace("/login"); 
+            }else if(command == "usercenter"){
+                this.$router.push("/user");
+            } 
+        }
         created(){
           console.log(this.getUser)
         }
