@@ -16,8 +16,8 @@
             <el-table-column label="人数" prop="count"></el-table-column> 
             <el-table-column label="日期" prop="date"></el-table-column>
             <el-table-column label="操作">
-                <template>
-                    <el-button size="mini">编辑</el-button>
+                <template slot-scope="scope">
+                    <el-button size="mini" @click="handleEdit(scope.$index,scope.row)">编辑</el-button>
                     <el-button size="mini" type="danger">删除</el-button>
                 </template>
             </el-table-column>
@@ -32,14 +32,16 @@
                 :total="total">
             </el-pagination>
         </div>
+        <EditDialog :dialogVisible="dialogVisible" :form="formData"></EditDialog>
     </div>
 </template>
 
 <script lang="ts">
     import { Component , Vue , Provide} from "vue-property-decorator";
+    import EditDialog from "./EditDialog.vue"
     @Component({
         components:{
-
+            EditDialog
         }
     })
     export default class TableData extends Vue {
@@ -49,6 +51,20 @@
         @Provide() page:number = 1;
         @Provide() size:number = 10;
         @Provide() total:number = 0;
+
+        @Provide() dialogVisible:Boolean = false;//是否展示编辑页面
+        @Provide() formData:object = {
+            title:"",
+            type:"",
+            level:"",
+            count:"",
+            date:""
+        }
+        handleEdit(index:number,row:object){
+            console.log(index,row)
+            this.dialogVisible = true;
+            this.formData = row;
+        }
         created(){
             this.loadData()
         }
