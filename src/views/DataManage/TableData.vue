@@ -18,7 +18,7 @@
             <el-table-column label="操作">
                 <template slot-scope="scope">
                     <el-button size="mini" @click="handleEdit(scope.$index,scope.row)">编辑</el-button>
-                    <el-button size="mini" type="danger">删除</el-button>
+                    <el-button size="mini" @click="handleDelete(scope.$index,scope.row)" type="danger">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -32,7 +32,7 @@
                 :total="total">
             </el-pagination>
         </div>
-        <EditDialog :dialogVisible="dialogVisible" :form="formData"></EditDialog>
+        <EditDialog @closeDialog="closeDialog" :dialogVisible="dialogVisible" :form="formData"></EditDialog>
     </div>
 </template>
 
@@ -45,10 +45,10 @@
         }
     })
     export default class TableData extends Vue {
-        @Provide() searchVal:string = "";
+        @Provide() searchVal:string = "";//搜索框
         @Provide() tHight:number = document.body.offsetHeight - 270;
-        @Provide() tableData:any = [];
-        @Provide() page:number = 1;
+        @Provide() tableData:any = [];//表格数据
+        @Provide() page:number = 1;//当前页码
         @Provide() size:number = 10;
         @Provide() total:number = 0;
 
@@ -60,10 +60,19 @@
             count:"",
             date:""
         }
-        handleEdit(index:number,row:object){
+        handleEdit(index:number,row:any){
             console.log(index,row)
             this.dialogVisible = true;
             this.formData = row;
+        }
+        handleDelete(index:number,row:any){
+            (this as any).$axios.delete(`/api/profiles/delete/${row._id}`).then((res:any) => {
+                this.$message({
+                    message:res.data.msg,
+                    type:"success"
+                });
+                this.tableData.splice(index,1);
+            })
         }
         created(){
             this.loadData()
@@ -76,17 +85,21 @@
             })
         }
         handleSizeChange(val:number):void{
+            
             this.size = val;
             this.page = 1;
+            console.log(val)
             // this.loadData()
             this.searchVal ? this.loadSearchData():this.loadData();
         }
         handleCurrentChange(val: number): void{
+            
             this.page = val;
+            console.log(val)
             // this.loadData()
             this.searchVal ? this.loadSearchData():this.loadData();
         }
-        handleSearch(){
+        handleSearch():void{//点击搜索
             this.page = 1;
             
             this.searchVal ? this.loadSearchData():this.loadData();
@@ -98,6 +111,9 @@
                 this.tableData = res.data.datas.list;
                 this.total = res.data.datas.total;
             })
+        }
+        closeDialog(){
+            this.dialogVisible = false;
         }
     }
 </script>
