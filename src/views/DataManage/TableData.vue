@@ -88,14 +88,14 @@
             
             this.size = val;
             this.page = 1;
-            console.log(val)
+            // console.log(val)
             // this.loadData()
             this.searchVal ? this.loadSearchData():this.loadData();
         }
         handleCurrentChange(val: number): void{
             
             this.page = val;
-            console.log(val)
+            // console.log(val)
             // this.loadData()
             this.searchVal ? this.loadSearchData():this.loadData();
         }
@@ -107,7 +107,7 @@
         loadSearchData(){
             // 加载搜索的数据
             (this as any).$axios(`/api/profiles/search/${this.searchVal}/${this.page}/${this.size}`).then((res:any) => {
-                console.log(res)
+                // console.log(res)
                 this.tableData = res.data.datas.list;
                 this.total = res.data.datas.total;
             })

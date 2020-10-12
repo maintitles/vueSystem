@@ -62,13 +62,14 @@ export default class Login extends Vue {
 	}
 	handleSubmit():void{
 		(this.$refs["ruleForm"] as any).validate((valid:boolean) => {
-			console.log("验证通过")
+			
 			if (valid) {
 				this.isLogin = true;
 				// 网络请求
 				(this as any).$axios
 				.post("/api/users/login", this.ruleForm)
 				.then((res: any) => {
+                    console.log("验证通过")
 					this.isLogin = false;
 					console.log(res.data);
 					localStorage.setItem("tsToken",res.data.token);
