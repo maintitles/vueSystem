@@ -1,5 +1,5 @@
 <template>
-    <div class="chart" :style="{width:chartwidth,height:chartHeight}">
+    <div ref="mychart" class="chart" :style="{width:chartWidth,height:chartHeight}">
         
     </div>
 </template>
@@ -8,8 +8,7 @@
     import { Component , Vue , Provide , Prop} from "vue-property-decorator";
     import echarts from "echarts"
     @Component({
-        components:{
-        }
+        components:{}
     })
     export default class Charts extends Vue {
         @Prop({type:String,default:"line"}) readonly chartType !: string;//图表类型 line/bar/pie
@@ -21,10 +20,143 @@
         }
         getAutoHeight(){
             //图表的宽度和高度
-            this.chartHeight = `${document.body.offestHeight* 0.6}px`
-            this.chartwidth = `${document.body.offsetWidth * 0.8 }px`
+            this.chartHeight = `${document.body.offsetHeight* 0.6}px`;
+            this.chartWidth = `${document.body.offsetWidth * 0.8 }px`;
+        }
+        mounted(){
+            this.drawChart();
+        }
+        drawChart(){
+            // 1.实例化echarts对象
+            let chart = echarts.init((this as any).$refs.mychart as HTMLCanvasElement);
+            if(chart == undefined) {
+                console.log(`echarts init dom is failed`);
+                return;
+            }
+            switch (this.chartType) {
+                case "line":
+                    chart.setOption((this as any).getLineOption());
+                    break;
+                case "bar":
+                    chart.setOption((this as any).getBarOption());
+                    break;
+                case "pie":
+                    chart.setOption((this as any).generatorPieOption());
+                    break;
+            }
+        }
+
+        getLineOption(){//绘制折线图
+            return {
+                title: {
+                    text: "折线图",
+                    subtext: "test",
+                    x: "center"
+                },
+                tooltip: {
+                    trigger: "axis",
+                    axisPointer: {
+                        type: "cross",
+                        label: {
+                            backgroundColor: "#6a7985"
+                        }
+                    }
+                },
+                xAxis: {
+                    type: "category",
+                    data: (this as any).chartData.xAxisData
+                },
+                yAxis: {
+                    type: "value"
+                },
+                series: [
+                    {
+                      data: (this as any).chartData.yAxisData,
+                      type: "line",
+                      smooth: true
+                    }
+                ] 
+            }
+        }
+        getBarOption(){//绘制柱状图
+            return {
+                title: {
+                    text: "柱状图",
+                    subtext: "test",
+                    x: "center"
+                },
+                xAxis: {
+                    type: "category",
+                    data: (this as any).chartData.xAxisData
+                },
+                yAxis: {
+                    type: "value"
+                },
+                series: [
+                    {
+                        data: (this as any).chartData.yAxisData,
+                        type: "bar",
+                        barWidth: "20%"
+                    }
+                ],
+                color: ["#3398DB"],
+                tooltip: {
+                    trigger: "axis",
+                    axisPointer: {
+                        // 坐标轴指示器，坐标轴触发有效
+                        type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                grid: {
+                    left: "3%",
+                    right: "4%",
+                    bottom: "5%"
+                }
+            };
+        }
+        generatorPieOption(){//绘制扇形图
+            let pieData = [];
+            for(const index in (this as any).chartData.xAxisData){
+                pieData.push({
+                    value:(this as any).chartData.yAxisData[index],
+                    name:(this as any).chartData.xAxisData[index]
+                })
+            }
+            return {
+                title: {
+                    text: "扇形图",
+                    subtext: "test",
+                    x: "center"
+                },
+                tooltip: {
+                    trigger: "item",
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient: "vertical",
+                    left: "left",
+                    data: (this as any).chartData.xAxisData
+                },
+                series: [
+                    {
+                        name: "访问来源",
+                        type: "pie",
+                        radius: "55%",
+                        center: ["50%", "60%"],
+                        data: pieData,
+                        itemStyle: {
+                            emphasis: {
+                              shadowBlur: 10,
+                              shadowOffsetX: 0,
+                              shadowColor: "rgba(0, 0, 0, 0.5)"
+                            }
+                        }
+                    }
+                ]
+            };
         }
     }
+        
 </script>
 
 <style lang="scss">
