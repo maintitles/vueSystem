@@ -1,7 +1,7 @@
 <template>
     <div class="table-data">
         <div class="search-box">
-            <el-input size="small" placeholder="请输入" v-model="searchVal">
+            <el-input size="small" placeholder="请输入名称" v-model="searchVal">
                 
             </el-input>
             <el-button size="small" type="primary" icon="el-icon-search" @click="handleSearch">

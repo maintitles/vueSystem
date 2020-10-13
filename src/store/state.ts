@@ -3,7 +3,7 @@ import { asyncRouterMap } from "../router"
 
 const state: any = {
   user: null,
-  routers: asyncRouterMap
+  routers: []
 };
 
 export default state;
