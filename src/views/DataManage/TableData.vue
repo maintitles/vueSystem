@@ -15,7 +15,7 @@
             <el-table-column label="技术" prop="type"></el-table-column>
             <el-table-column label="人数" prop="count"></el-table-column> 
             <el-table-column label="日期" prop="date"></el-table-column>
-            <el-table-column label="操作">
+            <el-table-column label="操作" v-if="getUser.key != 'visitor'">
                 <template slot-scope="scope">
                     <el-button size="mini" @click="handleEdit(scope.$index,scope.row)">编辑</el-button>
                     <el-button size="mini" @click="handleDelete(scope.$index,scope.row)" type="danger">删除</el-button>
@@ -38,6 +38,7 @@
 
 <script lang="ts">
     import { Component , Vue , Provide} from "vue-property-decorator";
+    import { State, Getter, Mutation, Action } from "vuex-class";
     import EditDialog from "./EditDialog.vue"
     @Component({
         components:{
@@ -45,6 +46,7 @@
         }
     })
     export default class TableData extends Vue {
+        @Getter("user") getUser:any;
         @Provide() searchVal:string = "";//搜索框
         @Provide() tHight:number = document.body.offsetHeight - 270;
         @Provide() tableData:any = [];//表格数据
