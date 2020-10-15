@@ -3,12 +3,11 @@
         <div class="page-center">
             <div class="info">
                 <div class="title">
-                    <img src="@/assets/logo.png" />
-                    <span>米修在线</span>
+                    <span>Login From</span>
                 </div>
-                <div class="detail">
+                <!-- <div class="detail">
                     <span>纸上得来终觉浅，绝知此事要躬行！</span>
-                </div>
+                </div> -->
             </div>
             <div class="container">
                 <slot name="container"></slot>
@@ -49,7 +48,7 @@
                 justify-content: center;
                 align-items: Center;
                 font-size: 32px;
-                color: rgba(0, 0, 0, 0.85);
+                color: #eee;
                 font-family: "Myriad Pro", "Helvetica Neue", Arial, Helvetica,
                     sans-serif;
                 font-weight: 600;
@@ -60,7 +59,7 @@
             }
             .detail {
                 font-size: 16px;
-                color: rgba(0, 0, 0, 0.45);
+                color: #eee;
                 margin-bottom: 40px;
                 line-height: 1.5;
             }

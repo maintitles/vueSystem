@@ -23,5 +23,6 @@ export default class App extends Vue {
     #app {
       width: 100%;
       height: 100%;
+      background:#2d3a4b
     }
 </style>

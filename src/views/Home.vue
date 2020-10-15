@@ -2,10 +2,10 @@
     <div class="home">
 		<div class="home-body">
             <h4 class="title">欢迎来访！</h4>
-            <p class="des">走过了人来人往，不喜欢也得欣赏！</p>
-            <el-button @click="learn">
-                打开网站
-            </el-button>
+            <p class="des">纸上得来终觉浅，绝知此事要躬行！</p>
+            <!-- <el-button @click="learn">
+                打开百度
+            </el-button> -->
         </div>
     </div>
 </template>

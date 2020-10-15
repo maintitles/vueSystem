@@ -29,6 +29,7 @@
 					<el-checkbox label="7天内自动登录" :checked="ruleForm.autoLogin"></el-checkbox>
 					<el-button @click="$router.push('/password')" class="forget">忘记密码？</el-button>
 				</el-form-item>
+                
             </el-form>
         </LoginHeader>
     </div>
@@ -52,8 +53,8 @@ export default class Login extends Vue {
         pwd: String,
         autoLogin: boolean
     } = {
-        username: "",
-        pwd: "",
+        username: "admin",
+        pwd: "123456",
         autoLogin: true //是否自动登录
 	};
 	@Provide() rules = {
